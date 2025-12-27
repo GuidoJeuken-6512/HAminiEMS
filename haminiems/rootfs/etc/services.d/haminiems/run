@@ -1,0 +1,12 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Start HAminiEMS Service
+# s6-overlay docs: https://github.com/just-containers/s6-overlay
+# ==============================================================================
+
+# Setze Python-Pfad
+export PYTHONPATH="/usr/bin:${PYTHONPATH}"
+
+# Starte die Python-Anwendung
+cd /usr/bin/haminiems
+exec python3 -m haminiems.main

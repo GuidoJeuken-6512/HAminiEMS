@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAminiEMS - Energy Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="{{ url_for('static', filename='icons/icon.png') }}" alt="HAminiEMS" class="header-icon">
+            <h1>HAminiEMS</h1>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/config">Konfiguration</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="status-bar">
+                <div class="status-item">
+                    <span class="status-label">Status:</span>
+                    <span id="connection-status" class="status-value">Prüfe...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Letzte Aktualisierung:</span>
+                    <span id="last-update" class="status-value">-</span>
+                </div>
+                <button id="refresh-btn" class="btn btn-primary">Aktualisieren</button>
+            </div>
+
+            <div class="sensors-grid" id="sensors-grid">
+                <div class="loading">Lade Sensoren...</div>
+            </div>
+
+            <div class="energy-balance" id="energy-balance">
+                <h2>Energiebilanz</h2>
+                <div class="loading">Lade Energiebilanz...</div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+

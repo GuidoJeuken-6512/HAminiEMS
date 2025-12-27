@@ -1,0 +1,19 @@
+name: HAminiEMS
+description: Mini Energy Management System for Home Assistant
+
+options:
+  ha_url:
+    name: Home Assistant URL
+    description: The URL to your Home Assistant instance
+  ha_token:
+    name: Home Assistant Token
+    description: Long-Lived Access Token from Home Assistant
+  refresh_interval:
+    name: Refresh Interval
+    description: Interval in seconds for automatic refresh
+
+states:
+  running: Running
+  stopped: Stopped
+  error: Error
+

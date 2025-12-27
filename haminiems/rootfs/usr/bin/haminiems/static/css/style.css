@@ -1,0 +1,302 @@
+/* HAminiEMS Stylesheet */
+
+:root {
+    --primary-color: #03a9f4;
+    --secondary-color: #0288d1;
+    --success-color: #4caf50;
+    --error-color: #f44336;
+    --warning-color: #ff9800;
+    --bg-color: #f5f5f5;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --border-color: #e0e0e0;
+    --shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+header {
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow);
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-icon {
+    width: 32px;
+    height: 32px;
+}
+
+header h1 {
+    flex: 1;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+}
+
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+nav a:hover {
+    background-color: var(--bg-color);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.status-bar {
+    background-color: var(--card-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.status-item {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.status-label {
+    font-weight: 600;
+}
+
+.status-value {
+    color: var(--primary-color);
+}
+
+.btn {
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+}
+
+.btn-secondary {
+    background-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.btn-secondary:hover {
+    background-color: #d0d0d0;
+}
+
+.sensors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.sensor-card {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.sensor-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.sensor-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.sensor-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+}
+
+.sensor-unit {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.sensor-entity {
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: 0.5rem;
+}
+
+.energy-balance {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.energy-balance h2 {
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+.balance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.balance-item {
+    padding: 1rem;
+    background-color: var(--bg-color);
+    border-radius: 4px;
+}
+
+.balance-item-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.balance-item-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+.error {
+    background-color: #ffebee;
+    color: var(--error-color);
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+.config-section {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.config-section h2 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.sensor-configs {
+    margin: 2rem 0;
+}
+
+.sensor-config {
+    display: grid;
+    grid-template-columns: 200px 1fr 150px 80px;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sensor-config:last-child {
+    border-bottom: none;
+}
+
+.sensor-config label {
+    font-weight: 600;
+}
+
+.sensor-config select {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.sensor-config input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.success-message {
+    background-color: #e8f5e9;
+    color: var(--success-color);
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+    .sensor-config {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .sensors-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .status-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+

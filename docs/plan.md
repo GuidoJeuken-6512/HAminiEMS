@@ -5,18 +5,18 @@
 Das Add-On wird als Python-basiertes Web-Application mit folgender Struktur aufgebaut:
 
 ```
-miniEMS/
+HAminiEMS/
 ├── config.yaml          # Add-On Konfiguration
 ├── build.yaml           # Build-Konfiguration
 ├── Dockerfile           # Container-Definition
 ├── rootfs/
 │   ├── etc/
 │   │   └── services.d/
-│   │       └── miniems/
+│   │       └── haminiems/
 │   │           └── run  # Service-Start-Script
 │   └── usr/
 │       └── bin/
-│           └── miniems/ # Python-Anwendung
+│           └── haminiems/ # Python-Anwendung
 │               ├── __init__.py
 │               ├── main.py           # Flask/FastAPI App
 │               ├── const.py          # Konstanten (inkl. DB_VERSION)
@@ -157,8 +157,8 @@ VERSION = 1
 ## Implementierungs-Schritte
 
 ### 1. Add-On Grundstruktur
-- [config.yaml](example/config.yaml) anpassen: Name, Slug, Beschreibung für miniEMS
-- [build.yaml](example/build.yaml) anpassen: Build-Konfiguration
+- config.yaml anpassen: Name, Slug, Beschreibung für HAminiEMS
+- build.yaml anpassen: Build-Konfiguration
 - Dockerfile erweitern: Python, SQLite, notwendige Pakete installieren
 - Service-Script erstellen: Python-Anwendung starten
 

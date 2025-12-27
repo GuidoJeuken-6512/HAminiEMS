@@ -1,0 +1,2 @@
+"""Migrations-Modul für HAminiEMS"""
+
