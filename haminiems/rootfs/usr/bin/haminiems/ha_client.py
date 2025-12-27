@@ -115,3 +115,4 @@ class HAClient:
             logger.error(f"Verbindungstest fehlgeschlagen: {e}")
             return False
 
+

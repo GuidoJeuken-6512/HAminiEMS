@@ -128,3 +128,4 @@ Bei Problemen:
 2. Öffne ein [Issue auf GitHub](https://github.com/GuidoJeuken-6512/HAminiEMS/issues)
 3. Prüfe die Logs im Add-On Tab
 
+

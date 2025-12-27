@@ -10,3 +10,4 @@
 - Energiefluss-Visualisierung
 - Zweisprachige Unterstützung (DE/EN)
 
+

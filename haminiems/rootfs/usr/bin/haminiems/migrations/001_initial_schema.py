@@ -48,3 +48,4 @@ def down(db_connection):
     db_connection.execute("DROP TABLE IF EXISTS entity_values;")
     db_connection.commit()
 
+

@@ -66,3 +66,4 @@ def filter_energy_entities(entities: list) -> list:
         if is_energy_entity(entity)
     ]
 
+

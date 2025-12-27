@@ -109,3 +109,4 @@ def get_database() -> Database:
         _db_instance = Database()
     return _db_instance
 
+

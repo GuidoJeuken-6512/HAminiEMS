@@ -20,3 +20,4 @@ schema:
   refresh_interval: "int(1,)?"
 image: "ghcr.io/guidojeuken-6512/{arch}-addon-haminiems"
 
+

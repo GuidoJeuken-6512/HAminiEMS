@@ -32,3 +32,4 @@ DB_PATH = "/config/haminiems.db"
 # Standard-Refresh-Interval (Sekunden)
 DEFAULT_REFRESH_INTERVAL = 30
 
+

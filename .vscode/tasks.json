@@ -16,6 +16,21 @@
       "problemMatcher": []
     },
     {
+      "label": ": \"Start Home Assistant (Foreground)\"",
+      "type": "shell",
+      "command": "supervisor_run",
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "isBackground": false
+    },
+    {
       "label": "Start Addon",
       "type": "shell",
       "command": "ha addons stop \"local_${input:addonName}\"; ha addons start \"local_${input:addonName}\"; docker logs --follow \"addon_local_${input:addonName}\"",

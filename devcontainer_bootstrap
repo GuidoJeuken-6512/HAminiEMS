@@ -1,0 +1,47 @@
+#!/bin/bash
+# Dev Container Bootstrap Script für HAminiEMS
+
+set -e
+
+echo "🚀 HAminiEMS Dev Container wird initialisiert..."
+
+# Prüfe ob Home Assistant Supervisor läuft
+if ! command -v ha &> /dev/null; then
+    echo "⚠️  Home Assistant Supervisor CLI nicht gefunden"
+    echo "   Das ist normal, wenn der Container außerhalb von Home Assistant läuft"
+else
+    echo "✅ Home Assistant Supervisor CLI gefunden"
+    
+    # Prüfe ob das Add-On bereits registriert ist
+    if ha addons info "local_haminiems" &> /dev/null; then
+        echo "✅ Add-On 'local_haminiems' ist bereits registriert"
+    else
+        echo "📦 Registriere Add-On 'local_haminiems'..."
+        ha addons reload
+        sleep 2
+    fi
+fi
+
+# Python Dependencies prüfen
+if command -v python3 &> /dev/null; then
+    echo "✅ Python 3 gefunden: $(python3 --version)"
+    
+    # Prüfe ob Flask installiert ist
+    if python3 -c "import flask" &> /dev/null; then
+        echo "✅ Flask ist installiert"
+    else
+        echo "⚠️  Flask nicht gefunden (wird im Container installiert)"
+    fi
+else
+    echo "⚠️  Python 3 nicht gefunden"
+fi
+
+echo ""
+echo "✨ Dev Container ist bereit!"
+echo ""
+echo "Nützliche Befehle:"
+echo "  - ha addons rebuild local_haminiems  # Add-On neu bauen"
+echo "  - ha addons start local_haminiems     # Add-On starten"
+echo "  - ha addons logs local_haminiems      # Logs anzeigen"
+echo ""
+

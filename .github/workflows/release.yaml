@@ -18,6 +18,11 @@ jobs:
     permissions:
       contents: read
       packages: write
+    strategy:
+      matrix:
+        arch:
+          - aarch64
+          - amd64
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -37,15 +42,38 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Publish Add-on
-        uses: home-assistant/builder@master
+      - name: Read version from config.yaml
+        id: version
+        run: |
+          VERSION=$(grep '^version:' haminiems/config.yaml | cut -d'"' -f2)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Add-On Version: $VERSION"
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
         with:
-          addon: haminiems
-          image: ghcr.io/${{ github.repository_owner }}/{$arch}-addon-haminiems
-          args: |
-            --all \
-            --target /data \
-            --push \
-            --login ghcr.io \
-            --username ${{ github.repository_owner }} \
-            --password ${{ secrets.GITHUB_TOKEN }}
+          images: ghcr.io/${{ github.repository_owner }}/${{ matrix.arch }}-addon-haminiems
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./haminiems
+          file: ./haminiems/Dockerfile
+          platforms: linux/${{ matrix.arch }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            BUILD_ARCH=${{ matrix.arch }}
+            BUILD_FROM=ghcr.io/home-assistant/${{ matrix.arch }}-base:3.15
+            TEMPIO_VERSION=2021.09.0
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
