@@ -8,16 +8,19 @@ arch:
   - aarch64
   - amd64
 init: false
+ingress: true
+homeassistant_api: true
+webui: http://[HOST]:[PORT:8099]/
 map:
   - share:rw
 options:
-  ha_url: "http://supervisor/core"
+  ha_url: "http://homeassistant:8123"
   ha_token: ""
   refresh_interval: 30
 schema:
   ha_url: "str?"
   ha_token: "str?"
   refresh_interval: "int(1,)?"
-image: "ghcr.io/guidojeuken-6512/{arch}-addon-haminiems"
-
+# Für lokale Entwicklung: image-Zeile entfernt - wird lokal aus Dockerfile gebaut
+# Für veröffentlichte Version: Füge die nächste Zeile hinzu und setze den korrekten Tag
 

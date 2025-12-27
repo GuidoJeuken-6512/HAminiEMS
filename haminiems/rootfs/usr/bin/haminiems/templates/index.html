@@ -3,42 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAminiEMS - Energy Management</title>
+    <title>miniEMS - Energiekosten</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <header>
         <div class="header-content">
-            <img src="{{ url_for('static', filename='icons/icon.png') }}" alt="HAminiEMS" class="header-icon">
-            <h1>HAminiEMS</h1>
+            <img src="{{ url_for('static', filename='icons/icon.png') }}" alt="miniEMS" class="header-icon">
+            <h1>miniEMS - Hauptseite</h1>
             <nav>
-                <a href="/">Home</a>
-                <a href="/config">Konfiguration</a>
+                <a href="/" class="nav-link active">Hauptseite</a>
+                <a href="/config" class="nav-link">Konfiguration</a>
+                <a href="/energy-costs" class="nav-link">Energiekosten</a>
+                <a href="/logs" class="nav-link">Logs</a>
             </nav>
         </div>
     </header>
 
     <main>
         <div class="container">
-            <div class="status-bar">
-                <div class="status-item">
-                    <span class="status-label">Status:</span>
-                    <span id="connection-status" class="status-value">Prüfe...</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">Letzte Aktualisierung:</span>
-                    <span id="last-update" class="status-value">-</span>
-                </div>
-                <button id="refresh-btn" class="btn btn-primary">Aktualisieren</button>
+
+            <div style="margin-bottom: 20px; text-align: center;">
+                <button id="refresh-btn" class="btn btn-primary" style="padding: 10px 20px; background-color: #4caf50; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold;">
+                    Aktualisieren
+                </button>
             </div>
 
             <div class="sensors-grid" id="sensors-grid">
-                <div class="loading">Lade Sensoren...</div>
-            </div>
-
-            <div class="energy-balance" id="energy-balance">
-                <h2>Energiebilanz</h2>
-                <div class="loading">Lade Energiebilanz...</div>
+                <div class="sensor-card">
+                    <h3>PV Produktion</h3>
+                    <div class="sensor-value" id="pv_production-value">-</div>
+                    <div class="sensor-unit" id="pv_production-unit">kWh</div>
+                    <div class="sensor-entity" id="pv_production-entity">Nicht konfiguriert</div>
+                </div>
+                <div class="sensor-card">
+                    <h3>Netzbezug</h3>
+                    <div class="sensor-value" id="grid_import-value">-</div>
+                    <div class="sensor-unit" id="grid_import-unit">kWh</div>
+                    <div class="sensor-entity" id="grid_import-entity">Nicht konfiguriert</div>
+                </div>
+                <div class="sensor-card">
+                    <h3>Netzeinspeisung</h3>
+                    <div class="sensor-value" id="grid_export-value">-</div>
+                    <div class="sensor-unit" id="grid_export-unit">kWh</div>
+                    <div class="sensor-entity" id="grid_export-entity">Nicht konfiguriert</div>
+                </div>
+                <div class="sensor-card">
+                    <h3>Batterie Ladung</h3>
+                    <div class="sensor-value" id="battery_charge-value">-</div>
+                    <div class="sensor-unit" id="battery_charge-unit">kWh</div>
+                    <div class="sensor-entity" id="battery_charge-entity">Nicht konfiguriert</div>
+                </div>
+                <div class="sensor-card">
+                    <h3>Batterie Entladung</h3>
+                    <div class="sensor-value" id="battery_discharge-value">-</div>
+                    <div class="sensor-unit" id="battery_discharge-unit">kWh</div>
+                    <div class="sensor-entity" id="battery_discharge-entity">Nicht konfiguriert</div>
+                </div>
+                <div class="sensor-card">
+                    <h3>Batterie SOC</h3>
+                    <div class="sensor-value" id="battery_soc-value">-</div>
+                    <div class="sensor-unit" id="battery_soc-unit">%</div>
+                    <div class="sensor-entity" id="battery_soc-entity">Nicht konfiguriert</div>
+                </div>
+                <div class="sensor-card">
+                    <h3>Hausverbrauch</h3>
+                    <div class="sensor-value" id="house_consumption-value">-</div>
+                    <div class="sensor-unit" id="house_consumption-unit">kWh</div>
+                    <div class="sensor-entity" id="house_consumption-entity">Nicht konfiguriert</div>
+                </div>
             </div>
         </div>
     </main>
@@ -46,5 +79,6 @@
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
+
 
 

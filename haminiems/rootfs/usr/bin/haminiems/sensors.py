@@ -148,3 +148,4 @@ class SensorManager:
         return [dict(row) for row in rows]
 
 
+

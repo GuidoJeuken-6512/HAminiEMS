@@ -40,11 +40,27 @@ header {
     display: flex;
     align-items: center;
     gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.header-content h1 {
+    flex: 1;
+    min-width: 200px;
+}
+
+.header-content nav {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
 .header-icon {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
+    display: block;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 header h1 {
@@ -58,16 +74,29 @@ nav {
     gap: 1rem;
 }
 
-nav a {
-    color: var(--text-color);
+nav a,
+.nav-link {
+    color: var(--primary-color);
     text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
     transition: background-color 0.2s;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    z-index: 1;
 }
 
-nav a:hover {
+nav a:hover,
+.nav-link:hover {
     background-color: var(--bg-color);
+    text-decoration: underline;
+}
+
+nav a.active,
+.nav-link.active {
+    border-bottom: 2px solid var(--primary-color);
+    font-weight: 600;
 }
 
 .container {
@@ -289,15 +318,16 @@ nav a:hover {
         grid-template-columns: 1fr;
         gap: 0.5rem;
     }
-    
+
     .sensors-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .status-bar {
         flex-direction: column;
         align-items: flex-start;
     }
 }
+
 
 

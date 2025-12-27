@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAminiEMS - Konfiguration</title>
+    <title>miniEMS - Konfiguration</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <header>
         <div class="header-content">
-            <img src="{{ url_for('static', filename='icons/icon.png') }}" alt="HAminiEMS" class="header-icon">
-            <h1>HAminiEMS - Konfiguration</h1>
+            <img src="{{ url_for('static', filename='icons/icon.png') }}" alt="miniEMS" class="header-icon">
+            <h1>miniEMS - Konfiguration</h1>
             <nav>
-                <a href="/">Home</a>
-                <a href="/config">Konfiguration</a>
+                <a href="/" class="nav-link">Hauptseite</a>
+                <a href="/config" class="nav-link active">Konfiguration</a>
+                <a href="/energy-costs" class="nav-link">Energiekosten</a>
+                <a href="/logs" class="nav-link">Logs</a>
             </nav>
         </div>
     </header>
@@ -23,12 +25,12 @@
             <div class="config-section">
                 <h2>Sensor-Zuordnung</h2>
                 <p>Wählen Sie für jeden Sensor die entsprechende Home Assistant Entity aus.</p>
-                
+
                 <form id="config-form">
                     <div id="sensor-configs" class="sensor-configs">
                         <div class="loading">Lade Konfiguration...</div>
                     </div>
-                    
+
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">Speichern</button>
                         <button type="button" id="cancel-btn" class="btn btn-secondary">Abbrechen</button>
@@ -41,5 +43,6 @@
     <script src="{{ url_for('static', filename='js/config.js') }}"></script>
 </body>
 </html>
+
 
 

@@ -33,7 +33,7 @@
     {
       "label": "Start Addon",
       "type": "shell",
-      "command": "ha addons stop \"local_${input:addonName}\"; ha addons start \"local_${input:addonName}\"; docker logs --follow \"addon_local_${input:addonName}\"",
+      "command": "${workspaceFolder}/.vscode/scripts/start-addon.sh ${input:addonName}",
       "group": {
         "kind": "test",
         "isDefault": false
@@ -50,7 +50,49 @@
     {
       "label": "Rebuild and Start Addon",
       "type": "shell",
-      "command": "ha addons rebuild --force \"local_${input:addonName}\"; ha addons start \"local_${input:addonName}\"; docker logs --follow \"addon_local_${input:addonName}\"",
+      "command": "echo '📦 Registriere Add-On...' && ha addons reload && sleep 3 && echo '🔨 Baue Add-On...' && (ha addons rebuild --force \"local_${input:addonName}\" || ha addons build \"local_${input:addonName}\") && echo '🚀 Starte Add-On...' && ha addons start \"local_${input:addonName}\" && sleep 2 && echo '📋 Zeige Logs...' && docker logs --follow \"addon_local_${input:addonName}\"",
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Install/Register Addon",
+      "type": "shell",
+      "command": "echo '📦 Registriere Add-On...' && ha addons reload && sleep 3 && echo '🔨 Baue Add-On (installiert es automatisch)...' && (ha addons build \"local_${input:addonName}\" || ha addons rebuild \"local_${input:addonName}\") && echo '✅ Add-On erfolgreich gebaut und installiert!'",
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Show Addon Info",
+      "type": "shell",
+      "command": "ha addons info \"local_${input:addonName}\"",
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Check Addon Status",
+      "type": "shell",
+      "command": "ha addons info \"local_${input:addonName}\" 2>&1 || echo '❌ Add-On nicht gefunden. Führe zuerst \"Install/Register Addon\" aus.'",
       "group": {
         "kind": "test",
         "isDefault": false
@@ -68,7 +110,7 @@
       "type": "pickString",
       "description": "Name of addon (to add your addon to this list, please edit .vscode/tasks.json)",
       "options": [
-        "example",
+        "haminiems"
       ]
     }
   ]

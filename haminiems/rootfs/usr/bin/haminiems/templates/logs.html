@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>miniEMS - Logs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="{{ url_for('static', filename='icons/icon.png') }}" alt="miniEMS" class="header-icon">
+            <h1>miniEMS - Logs</h1>
+            <nav>
+                <a href="/" class="nav-link">Hauptseite</a>
+                <a href="/config" class="nav-link">Konfiguration</a>
+                <a href="/energy-costs" class="nav-link">Energiekosten</a>
+                <a href="/logs" class="nav-link active">Logs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="logs-section">
+                <h2>System-Logs</h2>
+                <div class="logs-controls">
+                    <button id="refresh-logs-btn" class="btn btn-primary">Aktualisieren</button>
+                    <button id="clear-logs-btn" class="btn btn-secondary">Logs löschen</button>
+                </div>
+                <div id="logs-container" class="logs-container">
+                    <div class="loading">Lade Logs...</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/logs.js') }}"></script>
+</body>
+</html>
+

@@ -545,3 +545,4 @@ Die API-Version entspricht der Add-On Version. Aktuelle Version: **1.0.0**
 Änderungen an der API werden in der [CHANGELOG.md](../haminiems/CHANGELOG.md) dokumentiert.
 
 
+

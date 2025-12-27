@@ -154,3 +154,4 @@ class MigrationManager:
         logger.info("Alle Migrationen erfolgreich abgeschlossen")
 
 
+

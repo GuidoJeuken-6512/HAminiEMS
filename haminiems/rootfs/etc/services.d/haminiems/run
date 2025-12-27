@@ -5,7 +5,7 @@
 # ==============================================================================
 
 # Setze Python-Pfad
-export PYTHONPATH="/usr/bin:${PYTHONPATH}"
+export PYTHONPATH="/usr/bin:${PYTHONPATH:-}"
 
 # Starte die Python-Anwendung
 cd /usr/bin/haminiems

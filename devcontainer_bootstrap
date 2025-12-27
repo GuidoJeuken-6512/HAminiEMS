@@ -1,7 +1,12 @@
 #!/bin/bash
 # Dev Container Bootstrap Script für HAminiEMS
 
-set -e
+# Nicht bei jedem Fehler abbrechen - Fehler werden behandelt
+set +e
+
+# Docker-Socket-Fehler unterdrücken (normal in Dev Containers)
+export DOCKER_HOST=""
+unset DOCKER_HOST 2>/dev/null || true
 
 echo "🚀 HAminiEMS Dev Container wird initialisiert..."
 
@@ -11,29 +16,125 @@ if ! command -v ha &> /dev/null; then
     echo "   Das ist normal, wenn der Container außerhalb von Home Assistant läuft"
 else
     echo "✅ Home Assistant Supervisor CLI gefunden"
-    
+
     # Prüfe ob das Add-On bereits registriert ist
     if ha addons info "local_haminiems" &> /dev/null; then
         echo "✅ Add-On 'local_haminiems' ist bereits registriert"
     else
         echo "📦 Registriere Add-On 'local_haminiems'..."
-        ha addons reload
-        sleep 2
+        timeout 30 ha addons reload || echo "⚠️  Add-On Reload hat zu lange gedauert oder fehlgeschlagen"
+        sleep 1
     fi
 fi
 
-# Python Dependencies prüfen
+# Python Dependencies prüfen und installieren
+# Suche Python in verschiedenen möglichen Pfaden
+PYTHON_CMD=""
 if command -v python3 &> /dev/null; then
-    echo "✅ Python 3 gefunden: $(python3 --version)"
-    
-    # Prüfe ob Flask installiert ist
-    if python3 -c "import flask" &> /dev/null; then
-        echo "✅ Flask ist installiert"
+    PYTHON_CMD="python3"
+elif command -v python &> /dev/null && python --version 2>&1 | grep -q "Python 3"; then
+    PYTHON_CMD="python"
+elif [ -f /usr/bin/python3 ]; then
+    PYTHON_CMD="/usr/bin/python3"
+elif [ -f /usr/local/bin/python3 ]; then
+    PYTHON_CMD="/usr/local/bin/python3"
+fi
+
+if [ -n "$PYTHON_CMD" ]; then
+    echo "✅ Python 3 gefunden: $($PYTHON_CMD --version 2>&1)"
+
+    # Prüfe ob pip installiert ist
+    PIP_CMD=""
+    if command -v pip3 &> /dev/null; then
+        PIP_CMD="pip3"
+    elif command -v pip &> /dev/null; then
+        PIP_CMD="pip"
+    fi
+
+    if [ -z "$PIP_CMD" ]; then
+        echo "📦 Installiere pip..."
+        if $PYTHON_CMD -m ensurepip --upgrade 2>/dev/null; then
+            echo "✅ pip über ensurepip installiert"
+            PIP_CMD="$PYTHON_CMD -m pip"
+        else
+            echo "⚠️  ensurepip fehlgeschlagen, versuche apt-get/apk..."
+            if command -v apt-get &> /dev/null; then
+                timeout 60 apt-get update -qq && timeout 120 apt-get install -y python3-pip || echo "⚠️  apt-get Installation fehlgeschlagen oder zu lange gedauert"
+                PIP_CMD="pip3"
+            elif command -v apk &> /dev/null; then
+                timeout 60 apk add --no-cache py3-pip || echo "⚠️  apk Installation fehlgeschlagen oder zu lange gedauert"
+                PIP_CMD="pip3"
+            fi
+        fi
     else
-        echo "⚠️  Flask nicht gefunden (wird im Container installiert)"
+        PIP_CMD="pip3"
+    fi
+
+    # Upgrade pip (falls pip verfügbar ist)
+    if [ -n "$PIP_CMD" ]; then
+        echo "📦 Aktualisiere pip..."
+        timeout 60 $PIP_CMD install --upgrade pip --quiet 2>/dev/null || echo "⚠️  pip Upgrade fehlgeschlagen oder zu lange gedauert"
+    fi
+
+    # Liste der benötigten Python-Pakete
+    REQUIRED_PACKAGES=("flask" "requests" "sqlalchemy")
+    MISSING_PACKAGES=()
+
+    # Prüfe welche Pakete fehlen
+    for package in "${REQUIRED_PACKAGES[@]}"; do
+        if ! $PYTHON_CMD -c "import ${package}" &> /dev/null; then
+            MISSING_PACKAGES+=("${package}")
+        fi
+    done
+
+    # Installiere fehlende Pakete
+    if [ ${#MISSING_PACKAGES[@]} -gt 0 ] && [ -n "$PIP_CMD" ]; then
+        echo "📦 Installiere fehlende Python-Pakete: ${MISSING_PACKAGES[*]}"
+        timeout 300 $PIP_CMD install --no-cache-dir "${MISSING_PACKAGES[@]}" || echo "⚠️  Paket-Installation fehlgeschlagen oder zu lange gedauert"
+    elif [ ${#MISSING_PACKAGES[@]} -eq 0 ]; then
+        echo "✅ Alle Python-Dependencies sind installiert"
+    fi
+
+    # Installiere Entwicklungstools (flake8 für Linting)
+    if [ -n "$PIP_CMD" ] && ! command -v flake8 &> /dev/null; then
+        echo "📦 Installiere Entwicklungstools (flake8)..."
+        timeout 120 $PIP_CMD install --no-cache-dir flake8 --quiet 2>/dev/null || echo "⚠️  flake8 Installation fehlgeschlagen oder zu lange gedauert"
+    fi
+
+    # Prüfe ob alle Pakete jetzt verfügbar sind
+    ALL_OK=true
+    for package in "${REQUIRED_PACKAGES[@]}"; do
+        if ! $PYTHON_CMD -c "import ${package}" &> /dev/null; then
+            echo "❌ Fehler: ${package} konnte nicht importiert werden"
+            ALL_OK=false
+        fi
+    done
+
+    if [ "$ALL_OK" = true ]; then
+        echo "✅ Alle Python-Dependencies sind verfügbar"
     fi
 else
-    echo "⚠️  Python 3 nicht gefunden"
+    echo "❌ Python 3 nicht gefunden - versuche Installation..."
+    # Versuche Python zu installieren
+    if command -v apt-get &> /dev/null; then
+        echo "📦 Installiere Python 3 über apt-get..."
+        timeout 120 apt-get update -qq && timeout 180 apt-get install -y python3 python3-pip || echo "⚠️  Python-Installation fehlgeschlagen"
+    elif command -v apk &> /dev/null; then
+        echo "📦 Installiere Python 3 über apk..."
+        timeout 120 apk add --no-cache python3 py3-pip || echo "⚠️  Python-Installation fehlgeschlagen"
+    else
+        echo "⚠️  Kein Paketmanager gefunden - Python muss manuell installiert werden"
+    fi
+    # Nicht mit Fehler beenden, damit Container-Start nicht hängt
+fi
+
+# PYTHONPATH setzen (für lokale Entwicklung)
+if [ -n "$WORKSPACE_DIRECTORY" ]; then
+    HAMINIEMS_PATH="${WORKSPACE_DIRECTORY}/haminiems/rootfs/usr/bin"
+    if [ -d "$HAMINIEMS_PATH" ]; then
+        export PYTHONPATH="${HAMINIEMS_PATH}:${PYTHONPATH}"
+        echo "✅ PYTHONPATH gesetzt: ${PYTHONPATH}"
+    fi
 fi
 
 echo ""
@@ -44,4 +145,8 @@ echo "  - ha addons rebuild local_haminiems  # Add-On neu bauen"
 echo "  - ha addons start local_haminiems     # Add-On starten"
 echo "  - ha addons logs local_haminiems      # Logs anzeigen"
 echo ""
+
+# Immer erfolgreich beenden, auch wenn einige Schritte fehlgeschlagen sind
+exit 0
+
 

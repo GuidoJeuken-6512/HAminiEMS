@@ -67,3 +67,4 @@ def filter_energy_entities(entities: list) -> list:
     ]
 
 
+

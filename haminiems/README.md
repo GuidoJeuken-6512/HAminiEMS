@@ -30,3 +30,4 @@ Ein Home Assistant Add-On zur Verwaltung und Visualisierung von Energieflüssen.
 Nach dem Start ist das Web-Interface unter dem Add-On Port erreichbar.
 
 
+
